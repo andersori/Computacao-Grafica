@@ -29,7 +29,6 @@ bool Desenho::colisao(Desenho *d)
     if(distancia < (this->raio + d->get_raio()))
     {
 
-        qDebug() << "morreu";
         this->vivo = false;
         return true;
     }

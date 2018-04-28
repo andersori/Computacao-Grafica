@@ -79,7 +79,7 @@ void GLWidget::initializeGL()
                 -this->height()/2.0, this->height()/2.0,
                 10, 10);
 
-    glMatrixMode(GL_VIEWPORT);
+    glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
 }
 
@@ -88,6 +88,22 @@ void GLWidget::paintGL()
     glClear(GL_COLOR_BUFFER_BIT);
     if(nv->is_vivo()){
         nv->paint();
+
+        for(int i = 0; i < inimigos.size(); i++)
+        {
+            Inimigo* ini = inimigos.at(i);
+
+            if(ini->is_vivo())
+            {
+                ini->paint();
+                nv->colisao(ini);
+            }
+            else{
+                qDebug() << "Um inimigo foi morto";
+                inimigos.removeAt(i);
+                add_novo_inimigo();
+            }
+        }
     }
 
     for(int i = 0; i < balas.size();i++)
@@ -100,7 +116,10 @@ void GLWidget::paintGL()
             for(int j = 0; j < inimigos.size(); j++)
             {
                 Inimigo* temp = inimigos.at(j);
-                temp->colisao(b);
+                if(temp->colisao(b))
+                {
+                    b->set_vivo(false);
+                }
             }
         }
         else{
@@ -110,21 +129,6 @@ void GLWidget::paintGL()
 
     }
 
-    for(int i = 0; i < inimigos.size(); i++)
-    {
-        Inimigo* ini = inimigos.at(i);
-
-        if(ini->is_vivo())
-        {
-            ini->paint();
-            nv->colisao(ini);
-        }
-        else{
-            qDebug() << "Um inimigo foi morto";
-            inimigos.removeAt(i);
-            add_novo_inimigo();
-        }
-    }
 }
 
 void GLWidget::add_novo_inimigo()

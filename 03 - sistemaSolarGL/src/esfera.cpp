@@ -28,7 +28,6 @@ void Esfera::paint()
     glPointSize(1);
     glBegin(GL_POINTS);
         glColor3fv(this->cor);
-        //glVertex3f(0.0, 0.0, 0.0);
         for(float y_temp = this->raio; y_temp > -this->raio; y_temp-= 0.02)
         {
             for(float ang = 0; ang < 360; ang++)
